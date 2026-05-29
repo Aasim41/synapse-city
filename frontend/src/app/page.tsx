@@ -48,7 +48,9 @@ export default function Dashboard() {
   const baselineWaitAccRef = useRef<number[]>([]);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://127.0.0.1:8000/ws/dashboard");
+    // Set up WebSocket connection
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://127.0.0.1:8000/ws/dashboard";
+    const ws = new WebSocket(wsUrl);
     ws.onmessage = (event) => {
       const parsed: TrafficData = JSON.parse(event.data);
       setData(parsed);
@@ -408,7 +410,8 @@ export default function Dashboard() {
               onChange={(e) => {
                 const val = e.target.value as any;
                 setActiveIncidentLocal(val);
-                fetch("http://127.0.0.1:8000/api/incident", {
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+                fetch(`${apiUrl}/api/incident`, {
                   method: "POST", headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ location: val })
                 });
@@ -430,7 +433,8 @@ export default function Dashboard() {
                 onChange={(e) => {
                     const val = e.target.value as any;
                     setActiveRushHourLocal(val);
-                    fetch("http://127.0.0.1:8000/api/rush_hour", {
+                    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+                    fetch(`${apiUrl}/api/rush_hour`, {
                         method: "POST", headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ mode: val })
                     });
