@@ -1,0 +1,1009 @@
+{
+  "strategy": "fixed_timer",
+  "switch_interval": 10,
+  "total_steps": 100,
+  "cumulative_wait": 2843,
+  "avg_queue": 28.43,
+  "steps": [
+    {
+      "step": 1,
+      "north": 0,
+      "south": 0,
+      "east": 1,
+      "west": 1,
+      "total_queue": 2,
+      "action": 0,
+      "reward": -2.0
+    },
+    {
+      "step": 2,
+      "north": 0,
+      "south": 0,
+      "east": 1,
+      "west": 3,
+      "total_queue": 4,
+      "action": 0,
+      "reward": -4.0
+    },
+    {
+      "step": 3,
+      "north": 0,
+      "south": 0,
+      "east": 2,
+      "west": 5,
+      "total_queue": 7,
+      "action": 0,
+      "reward": -7.0
+    },
+    {
+      "step": 4,
+      "north": 0,
+      "south": 0,
+      "east": 4,
+      "west": 7,
+      "total_queue": 11,
+      "action": 0,
+      "reward": -11.0
+    },
+    {
+      "step": 5,
+      "north": 0,
+      "south": 0,
+      "east": 6,
+      "west": 8,
+      "total_queue": 14,
+      "action": 0,
+      "reward": -14.0
+    },
+    {
+      "step": 6,
+      "north": 0,
+      "south": 0,
+      "east": 6,
+      "west": 10,
+      "total_queue": 16,
+      "action": 0,
+      "reward": -16.0
+    },
+    {
+      "step": 7,
+      "north": 0,
+      "south": 0,
+      "east": 7,
+      "west": 12,
+      "total_queue": 19,
+      "action": 0,
+      "reward": -19.0
+    },
+    {
+      "step": 8,
+      "north": 0,
+      "south": 0,
+      "east": 8,
+      "west": 12,
+      "total_queue": 20,
+      "action": 0,
+      "reward": -20.0
+    },
+    {
+      "step": 9,
+      "north": 0,
+      "south": 0,
+      "east": 10,
+      "west": 12,
+      "total_queue": 22,
+      "action": 0,
+      "reward": -22.0
+    },
+    {
+      "step": 10,
+      "north": 0,
+      "south": 0,
+      "east": 10,
+      "west": 13,
+      "total_queue": 23,
+      "action": 0,
+      "reward": -23.0
+    },
+    {
+      "step": 11,
+      "north": 0,
+      "south": 2,
+      "east": 10,
+      "west": 12,
+      "total_queue": 24,
+      "action": 1,
+      "reward": -24.0
+    },
+    {
+      "step": 12,
+      "north": 0,
+      "south": 4,
+      "east": 9,
+      "west": 12,
+      "total_queue": 25,
+      "action": 1,
+      "reward": -25.0
+    },
+    {
+      "step": 13,
+      "north": 2,
+      "south": 6,
+      "east": 9,
+      "west": 10,
+      "total_queue": 27,
+      "action": 1,
+      "reward": -27.0
+    },
+    {
+      "step": 14,
+      "north": 3,
+      "south": 7,
+      "east": 8,
+      "west": 8,
+      "total_queue": 26,
+      "action": 1,
+      "reward": -26.0
+    },
+    {
+      "step": 15,
+      "north": 4,
+      "south": 7,
+      "east": 8,
+      "west": 8,
+      "total_queue": 27,
+      "action": 1,
+      "reward": -27.0
+    },
+    {
+      "step": 16,
+      "north": 6,
+      "south": 9,
+      "east": 7,
+      "west": 8,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 17,
+      "north": 7,
+      "south": 9,
+      "east": 7,
+      "west": 7,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 18,
+      "north": 7,
+      "south": 10,
+      "east": 7,
+      "west": 5,
+      "total_queue": 29,
+      "action": 1,
+      "reward": -29.0
+    },
+    {
+      "step": 19,
+      "north": 8,
+      "south": 10,
+      "east": 7,
+      "west": 4,
+      "total_queue": 29,
+      "action": 1,
+      "reward": -29.0
+    },
+    {
+      "step": 20,
+      "north": 8,
+      "south": 10,
+      "east": 6,
+      "west": 4,
+      "total_queue": 28,
+      "action": 1,
+      "reward": -28.0
+    },
+    {
+      "step": 21,
+      "north": 8,
+      "south": 9,
+      "east": 6,
+      "west": 6,
+      "total_queue": 29,
+      "action": 0,
+      "reward": -29.0
+    },
+    {
+      "step": 22,
+      "north": 7,
+      "south": 9,
+      "east": 6,
+      "west": 6,
+      "total_queue": 28,
+      "action": 0,
+      "reward": -28.0
+    },
+    {
+      "step": 23,
+      "north": 7,
+      "south": 9,
+      "east": 7,
+      "west": 8,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 24,
+      "north": 7,
+      "south": 8,
+      "east": 9,
+      "west": 8,
+      "total_queue": 32,
+      "action": 0,
+      "reward": -32.0
+    },
+    {
+      "step": 25,
+      "north": 5,
+      "south": 8,
+      "east": 10,
+      "west": 8,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 26,
+      "north": 5,
+      "south": 6,
+      "east": 12,
+      "west": 8,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 27,
+      "north": 5,
+      "south": 6,
+      "east": 14,
+      "west": 9,
+      "total_queue": 34,
+      "action": 0,
+      "reward": -34.0
+    },
+    {
+      "step": 28,
+      "north": 4,
+      "south": 6,
+      "east": 14,
+      "west": 11,
+      "total_queue": 35,
+      "action": 0,
+      "reward": -35.0
+    },
+    {
+      "step": 29,
+      "north": 3,
+      "south": 5,
+      "east": 15,
+      "west": 12,
+      "total_queue": 35,
+      "action": 0,
+      "reward": -35.0
+    },
+    {
+      "step": 30,
+      "north": 1,
+      "south": 3,
+      "east": 15,
+      "west": 12,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 31,
+      "north": 2,
+      "south": 5,
+      "east": 14,
+      "west": 11,
+      "total_queue": 32,
+      "action": 1,
+      "reward": -32.0
+    },
+    {
+      "step": 32,
+      "north": 4,
+      "south": 6,
+      "east": 12,
+      "west": 11,
+      "total_queue": 33,
+      "action": 1,
+      "reward": -33.0
+    },
+    {
+      "step": 33,
+      "north": 5,
+      "south": 7,
+      "east": 11,
+      "west": 10,
+      "total_queue": 33,
+      "action": 1,
+      "reward": -33.0
+    },
+    {
+      "step": 34,
+      "north": 5,
+      "south": 8,
+      "east": 11,
+      "west": 8,
+      "total_queue": 32,
+      "action": 1,
+      "reward": -32.0
+    },
+    {
+      "step": 35,
+      "north": 6,
+      "south": 8,
+      "east": 10,
+      "west": 7,
+      "total_queue": 31,
+      "action": 1,
+      "reward": -31.0
+    },
+    {
+      "step": 36,
+      "north": 8,
+      "south": 8,
+      "east": 8,
+      "west": 6,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 37,
+      "north": 10,
+      "south": 10,
+      "east": 6,
+      "west": 4,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 38,
+      "north": 12,
+      "south": 10,
+      "east": 6,
+      "west": 2,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 39,
+      "north": 14,
+      "south": 10,
+      "east": 5,
+      "west": 1,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 40,
+      "north": 14,
+      "south": 11,
+      "east": 4,
+      "west": 1,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 41,
+      "north": 14,
+      "south": 10,
+      "east": 5,
+      "west": 2,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 42,
+      "north": 13,
+      "south": 10,
+      "east": 5,
+      "west": 2,
+      "total_queue": 30,
+      "action": 0,
+      "reward": -30.0
+    },
+    {
+      "step": 43,
+      "north": 12,
+      "south": 8,
+      "east": 5,
+      "west": 2,
+      "total_queue": 27,
+      "action": 0,
+      "reward": -27.0
+    },
+    {
+      "step": 44,
+      "north": 12,
+      "south": 8,
+      "east": 7,
+      "west": 3,
+      "total_queue": 30,
+      "action": 0,
+      "reward": -30.0
+    },
+    {
+      "step": 45,
+      "north": 12,
+      "south": 6,
+      "east": 9,
+      "west": 4,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 46,
+      "north": 12,
+      "south": 4,
+      "east": 10,
+      "west": 6,
+      "total_queue": 32,
+      "action": 0,
+      "reward": -32.0
+    },
+    {
+      "step": 47,
+      "north": 11,
+      "south": 3,
+      "east": 10,
+      "west": 7,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 48,
+      "north": 9,
+      "south": 1,
+      "east": 12,
+      "west": 8,
+      "total_queue": 30,
+      "action": 0,
+      "reward": -30.0
+    },
+    {
+      "step": 49,
+      "north": 8,
+      "south": 0,
+      "east": 14,
+      "west": 8,
+      "total_queue": 30,
+      "action": 0,
+      "reward": -30.0
+    },
+    {
+      "step": 50,
+      "north": 7,
+      "south": 0,
+      "east": 15,
+      "west": 10,
+      "total_queue": 32,
+      "action": 0,
+      "reward": -32.0
+    },
+    {
+      "step": 51,
+      "north": 8,
+      "south": 2,
+      "east": 14,
+      "west": 10,
+      "total_queue": 34,
+      "action": 1,
+      "reward": -34.0
+    },
+    {
+      "step": 52,
+      "north": 9,
+      "south": 2,
+      "east": 14,
+      "west": 10,
+      "total_queue": 35,
+      "action": 1,
+      "reward": -35.0
+    },
+    {
+      "step": 53,
+      "north": 9,
+      "south": 4,
+      "east": 12,
+      "west": 10,
+      "total_queue": 35,
+      "action": 1,
+      "reward": -35.0
+    },
+    {
+      "step": 54,
+      "north": 11,
+      "south": 5,
+      "east": 12,
+      "west": 8,
+      "total_queue": 36,
+      "action": 1,
+      "reward": -36.0
+    },
+    {
+      "step": 55,
+      "north": 11,
+      "south": 5,
+      "east": 11,
+      "west": 8,
+      "total_queue": 35,
+      "action": 1,
+      "reward": -35.0
+    },
+    {
+      "step": 56,
+      "north": 11,
+      "south": 6,
+      "east": 11,
+      "west": 6,
+      "total_queue": 34,
+      "action": 1,
+      "reward": -34.0
+    },
+    {
+      "step": 57,
+      "north": 13,
+      "south": 6,
+      "east": 11,
+      "west": 5,
+      "total_queue": 35,
+      "action": 1,
+      "reward": -35.0
+    },
+    {
+      "step": 58,
+      "north": 14,
+      "south": 6,
+      "east": 10,
+      "west": 5,
+      "total_queue": 35,
+      "action": 1,
+      "reward": -35.0
+    },
+    {
+      "step": 59,
+      "north": 14,
+      "south": 8,
+      "east": 9,
+      "west": 5,
+      "total_queue": 36,
+      "action": 1,
+      "reward": -36.0
+    },
+    {
+      "step": 60,
+      "north": 15,
+      "south": 9,
+      "east": 7,
+      "west": 4,
+      "total_queue": 35,
+      "action": 1,
+      "reward": -35.0
+    },
+    {
+      "step": 61,
+      "north": 13,
+      "south": 8,
+      "east": 7,
+      "west": 5,
+      "total_queue": 33,
+      "action": 0,
+      "reward": -33.0
+    },
+    {
+      "step": 62,
+      "north": 12,
+      "south": 6,
+      "east": 9,
+      "west": 6,
+      "total_queue": 33,
+      "action": 0,
+      "reward": -33.0
+    },
+    {
+      "step": 63,
+      "north": 12,
+      "south": 4,
+      "east": 9,
+      "west": 7,
+      "total_queue": 32,
+      "action": 0,
+      "reward": -32.0
+    },
+    {
+      "step": 64,
+      "north": 10,
+      "south": 2,
+      "east": 10,
+      "west": 7,
+      "total_queue": 29,
+      "action": 0,
+      "reward": -29.0
+    },
+    {
+      "step": 65,
+      "north": 10,
+      "south": 0,
+      "east": 10,
+      "west": 8,
+      "total_queue": 28,
+      "action": 0,
+      "reward": -28.0
+    },
+    {
+      "step": 66,
+      "north": 10,
+      "south": 0,
+      "east": 10,
+      "west": 10,
+      "total_queue": 30,
+      "action": 0,
+      "reward": -30.0
+    },
+    {
+      "step": 67,
+      "north": 10,
+      "south": 0,
+      "east": 11,
+      "west": 11,
+      "total_queue": 32,
+      "action": 0,
+      "reward": -32.0
+    },
+    {
+      "step": 68,
+      "north": 9,
+      "south": 0,
+      "east": 11,
+      "west": 11,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 69,
+      "north": 7,
+      "south": 0,
+      "east": 12,
+      "west": 12,
+      "total_queue": 31,
+      "action": 0,
+      "reward": -31.0
+    },
+    {
+      "step": 70,
+      "north": 6,
+      "south": 0,
+      "east": 12,
+      "west": 12,
+      "total_queue": 30,
+      "action": 0,
+      "reward": -30.0
+    },
+    {
+      "step": 71,
+      "north": 6,
+      "south": 1,
+      "east": 12,
+      "west": 11,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 72,
+      "north": 7,
+      "south": 3,
+      "east": 10,
+      "west": 10,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 73,
+      "north": 8,
+      "south": 4,
+      "east": 10,
+      "west": 8,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 74,
+      "north": 10,
+      "south": 4,
+      "east": 9,
+      "west": 7,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 75,
+      "north": 12,
+      "south": 5,
+      "east": 7,
+      "west": 5,
+      "total_queue": 29,
+      "action": 1,
+      "reward": -29.0
+    },
+    {
+      "step": 76,
+      "north": 13,
+      "south": 7,
+      "east": 5,
+      "west": 5,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 77,
+      "north": 14,
+      "south": 7,
+      "east": 3,
+      "west": 4,
+      "total_queue": 28,
+      "action": 1,
+      "reward": -28.0
+    },
+    {
+      "step": 78,
+      "north": 14,
+      "south": 7,
+      "east": 2,
+      "west": 4,
+      "total_queue": 27,
+      "action": 1,
+      "reward": -27.0
+    },
+    {
+      "step": 79,
+      "north": 14,
+      "south": 7,
+      "east": 0,
+      "west": 3,
+      "total_queue": 24,
+      "action": 1,
+      "reward": -24.0
+    },
+    {
+      "step": 80,
+      "north": 16,
+      "south": 9,
+      "east": 0,
+      "west": 3,
+      "total_queue": 28,
+      "action": 1,
+      "reward": -28.0
+    },
+    {
+      "step": 81,
+      "north": 14,
+      "south": 7,
+      "east": 1,
+      "west": 5,
+      "total_queue": 27,
+      "action": 0,
+      "reward": -27.0
+    },
+    {
+      "step": 82,
+      "north": 14,
+      "south": 5,
+      "east": 1,
+      "west": 5,
+      "total_queue": 25,
+      "action": 0,
+      "reward": -25.0
+    },
+    {
+      "step": 83,
+      "north": 12,
+      "south": 4,
+      "east": 2,
+      "west": 6,
+      "total_queue": 24,
+      "action": 0,
+      "reward": -24.0
+    },
+    {
+      "step": 84,
+      "north": 10,
+      "south": 4,
+      "east": 3,
+      "west": 8,
+      "total_queue": 25,
+      "action": 0,
+      "reward": -25.0
+    },
+    {
+      "step": 85,
+      "north": 10,
+      "south": 2,
+      "east": 3,
+      "west": 10,
+      "total_queue": 25,
+      "action": 0,
+      "reward": -25.0
+    },
+    {
+      "step": 86,
+      "north": 9,
+      "south": 0,
+      "east": 4,
+      "west": 11,
+      "total_queue": 24,
+      "action": 0,
+      "reward": -24.0
+    },
+    {
+      "step": 87,
+      "north": 9,
+      "south": 0,
+      "east": 6,
+      "west": 13,
+      "total_queue": 28,
+      "action": 0,
+      "reward": -28.0
+    },
+    {
+      "step": 88,
+      "north": 7,
+      "south": 0,
+      "east": 7,
+      "west": 13,
+      "total_queue": 27,
+      "action": 0,
+      "reward": -27.0
+    },
+    {
+      "step": 89,
+      "north": 5,
+      "south": 0,
+      "east": 9,
+      "west": 15,
+      "total_queue": 29,
+      "action": 0,
+      "reward": -29.0
+    },
+    {
+      "step": 90,
+      "north": 3,
+      "south": 0,
+      "east": 9,
+      "west": 17,
+      "total_queue": 29,
+      "action": 0,
+      "reward": -29.0
+    },
+    {
+      "step": 91,
+      "north": 5,
+      "south": 2,
+      "east": 7,
+      "west": 17,
+      "total_queue": 31,
+      "action": 1,
+      "reward": -31.0
+    },
+    {
+      "step": 92,
+      "north": 5,
+      "south": 3,
+      "east": 6,
+      "west": 15,
+      "total_queue": 29,
+      "action": 1,
+      "reward": -29.0
+    },
+    {
+      "step": 93,
+      "north": 5,
+      "south": 5,
+      "east": 5,
+      "west": 14,
+      "total_queue": 29,
+      "action": 1,
+      "reward": -29.0
+    },
+    {
+      "step": 94,
+      "north": 6,
+      "south": 6,
+      "east": 5,
+      "west": 12,
+      "total_queue": 29,
+      "action": 1,
+      "reward": -29.0
+    },
+    {
+      "step": 95,
+      "north": 8,
+      "south": 8,
+      "east": 4,
+      "west": 10,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 96,
+      "north": 8,
+      "south": 10,
+      "east": 4,
+      "west": 8,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 97,
+      "north": 8,
+      "south": 10,
+      "east": 2,
+      "west": 8,
+      "total_queue": 28,
+      "action": 1,
+      "reward": -28.0
+    },
+    {
+      "step": 98,
+      "north": 10,
+      "south": 10,
+      "east": 2,
+      "west": 6,
+      "total_queue": 28,
+      "action": 1,
+      "reward": -28.0
+    },
+    {
+      "step": 99,
+      "north": 11,
+      "south": 11,
+      "east": 2,
+      "west": 6,
+      "total_queue": 30,
+      "action": 1,
+      "reward": -30.0
+    },
+    {
+      "step": 100,
+      "north": 11,
+      "south": 11,
+      "east": 0,
+      "west": 4,
+      "total_queue": 26,
+      "action": 1,
+      "reward": -26.0
+    }
+  ]
+}

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart City Traffic Optimizer — DQN Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#0a0e1a;--bg-secondary:#111827;--bg-card:rgba(17,24,39,.55);
+  --border-card:rgba(255,255,255,.08);--border-hover:rgba(255,255,255,.15);
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
+  --cyan:#06b6d4;--purple:#a855f7;
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#64748b;
+  --glass-blur:16px;--radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:linear-gradient(145deg,var(--bg-primary) 0%,var(--bg-secondary) 50%,#0f172a 100%);
+  color:var(--text-primary);min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
+
+/* ── Container ── */
+.container{max-width:1320px;margin:0 auto;padding:0 24px}
+
+/* ── Glass Card ── */
+.glass{
+  background:var(--bg-card);
+  backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));
+  border:1px solid var(--border-card);
+  border-radius:var(--radius);
+  transition:transform .35s cubic-bezier(.22,1,.36,1),
+             box-shadow .35s cubic-bezier(.22,1,.36,1),
+             border-color .35s ease;
+}
+.glass:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+  border-color:var(--border-hover);
+}
+
+/* ── Hero ── */
+.hero{position:relative;padding:72px 0 48px;text-align:center;overflow:hidden}
+.hero-canvas{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-content{position:relative;z-index:1}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.5rem);font-weight:900;letter-spacing:-.03em;
+  background:linear-gradient(135deg,#fff 0%,var(--green) 40%,var(--amber) 70%,var(--red) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1.15;
+}
+.hero-subtitle{
+  font-size:clamp(.9rem,2vw,1.15rem);color:var(--text-secondary);
+  font-weight:400;margin-top:10px;letter-spacing:.02em;
+}
+.traffic-dot{
+  display:inline-block;width:12px;height:12px;border-radius:50%;
+  margin-left:8px;vertical-align:middle;
+  animation:dotPulse 3s ease-in-out infinite;
+  box-shadow:0 0 12px var(--green);background:var(--green);
+}
+@keyframes dotPulse{
+  0%,100%{background:var(--green);box-shadow:0 0 14px var(--green)}
+  33%{background:var(--amber);box-shadow:0 0 14px var(--amber)}
+  66%{background:var(--red);box-shadow:0 0 14px var(--red)}
+}
+
+/* ── Section Title ── */
+.section-title{
+  font-size:1.35rem;font-weight:700;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── Summary Cards ── */
+.summary-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  margin-bottom:40px;
+}
+.summary-card{
+  padding:28px 24px;position:relative;overflow:hidden;
+  border-top:3px solid var(--border-card);
+}
+.summary-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:80px;
+  opacity:.06;border-radius:var(--radius) var(--radius) 0 0;
+  pointer-events:none;
+}
+.summary-card[data-accent="green"]{border-top-color:var(--green)}
+.summary-card[data-accent="green"]::before{background:linear-gradient(180deg,var(--green),transparent)}
+.summary-card[data-accent="blue"]{border-top-color:var(--blue)}
+.summary-card[data-accent="blue"]::before{background:linear-gradient(180deg,var(--blue),transparent)}
+.summary-card[data-accent="amber"]{border-top-color:var(--amber)}
+.summary-card[data-accent="amber"]::before{background:linear-gradient(180deg,var(--amber),transparent)}
+.summary-card[data-accent="red"]{border-top-color:var(--red)}
+.summary-card[data-accent="red"]::before{background:linear-gradient(180deg,var(--red),transparent)}
+.card-icon{font-size:1.5rem;margin-bottom:8px;display:block}
+.card-label{font-size:.78rem;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em}
+.card-value{font-size:2.2rem;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+.card-sub{font-size:.8rem;color:var(--text-secondary);margin-top:4px}
+
+/* ── Charts Grid ── */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px}
+.chart-card{padding:24px}
+.chart-card h3{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chart-card h3 .indicator{width:10px;height:10px;border-radius:50%}
+.chart-wrap{position:relative;width:100%;aspect-ratio:2/1}
+.chart-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+
+/* ── Intersection Replay ── */
+.replay-controls{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.btn{
+  padding:8px 18px;border-radius:8px;border:1px solid var(--border-card);
+  background:rgba(255,255,255,.06);color:var(--text-primary);cursor:pointer;
+  font-family:inherit;font-size:.82rem;font-weight:500;
+  transition:all .2s;display:inline-flex;align-items:center;gap:6px;
+}
+.btn:hover{background:rgba(255,255,255,.12);border-color:var(--border-hover)}
+.btn.active{background:rgba(34,197,94,.15);border-color:var(--green);color:var(--green)}
+.step-display{font-variant-numeric:tabular-nums;color:var(--text-secondary);font-size:.82rem;margin-left:auto}
+.speed-controls{display:flex;gap:4px}
+.speed-btn{padding:4px 10px;font-size:.75rem;border-radius:6px;border:1px solid var(--border-card);background:rgba(255,255,255,.04);color:var(--text-muted);cursor:pointer;font-family:inherit;transition:all .2s}
+.speed-btn:hover,.speed-btn.active{background:rgba(59,130,246,.15);border-color:var(--blue);color:var(--blue)}
+
+/* ── Intersection SVG ── */
+.intersection-container{position:relative;width:100%;aspect-ratio:1/1;max-width:420px;margin:0 auto}
+.intersection-container svg{width:100%;height:100%}
+
+/* ── Legend ── */
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text-secondary)}
+.legend-swatch{width:12px;height:12px;border-radius:3px}
+
+/* ── Bar Chart ── */
+.bar-chart-container{position:relative;width:100%;aspect-ratio:1.6/1}
+.bar-chart-container canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.bar-legend{display:flex;gap:20px;margin-top:12px;justify-content:center}
+.bar-legend-item{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text-secondary)}
+.bar-legend-swatch{width:14px;height:10px;border-radius:2px}
+
+/* ── Epsilon ── */
+.epsilon-section{margin-bottom:40px}
+.epsilon-card{padding:24px}
+.epsilon-chart-wrap{position:relative;width:100%;aspect-ratio:3.5/1}
+.epsilon-chart-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;padding:32px 0 40px;
+  font-size:.82rem;color:var(--text-muted);
+  border-top:1px solid var(--border-card);margin-top:20px;
+}
+.footer span{
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-weight:600;
+}
+
+/* ── Error State ── */
+.error-state{
+  text-align:center;padding:100px 24px;
+}
+.error-state .icon{font-size:3.5rem;margin-bottom:20px}
+.error-state h2{font-size:1.5rem;font-weight:700;margin-bottom:10px}
+.error-state p{color:var(--text-secondary);margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}
+.error-state code{
+  display:block;background:rgba(255,255,255,.06);padding:14px 20px;
+  border-radius:8px;font-family:'Cascadia Code','Fira Code',monospace;font-size:.9rem;
+  color:var(--green);border:1px solid var(--border-card);max-width:340px;margin:0 auto;
+}
+
+/* ── Responsive ── */
+@media(max-width:1024px){
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+  .charts-row{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .summary-grid{grid-template-columns:1fr}
+  .container{padding:0 14px}
+  .hero{padding:48px 0 32px}
+  .hero h1{font-size:1.8rem}
+}
+
+/* ── Fade-in animation ── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ═══ Hero ═══ -->
+<section class="hero" id="hero">
+  <canvas class="hero-canvas" id="particleCanvas"></canvas>
+  <div class="hero-content">
+    <h1>🚦 Smart City Traffic Optimizer</h1>
+    <p class="hero-subtitle">Deep Q-Network Reinforcement Learning <span class="traffic-dot"></span></p>
+  </div>
+</section>
+
+<div class="container" id="dashboard" style="display:none">
+
+  <!-- ═══ Summary Cards ═══ -->
+  <div class="summary-grid fade-up">
+    <div class="glass summary-card" data-accent="green">
+      <span class="card-icon">📈</span>
+      <span class="card-label">Queue Improvement</span>
+      <div class="card-value" id="val-improvement" data-target="0" data-suffix="%">0%</div>
+      <span class="card-sub">vs fixed-timer baseline</span>
+    </div>
+    <div class="glass summary-card" data-accent="blue">
+      <span class="card-icon">⚡</span>
+      <span class="card-label">Episodes Trained</span>
+      <div class="card-value" id="val-episodes" data-target="0">0</div>
+      <span class="card-sub">DQN training iterations</span>
+    </div>
+    <div class="glass summary-card" data-accent="amber">
+      <span class="card-icon">🤖</span>
+      <span class="card-label">Agent Avg Queue</span>
+      <div class="card-value" id="val-agent-q" data-target="0" data-decimals="2">0</div>
+      <span class="card-sub">vehicles per step</span>
+    </div>
+    <div class="glass summary-card" data-accent="red">
+      <span class="card-icon">🔴</span>
+      <span class="card-label">Baseline Avg Queue</span>
+      <div class="card-value" id="val-baseline-q" data-target="0" data-decimals="2">0</div>
+      <span class="card-sub">fixed-timer controller</span>
+    </div>
+  </div>
+
+  <!-- ═══ Training Progress ═══ -->
+  <div class="section-title fade-up"><div class="dot" style="background:var(--blue)"></div> Training Progress</div>
+  <div class="charts-row fade-up">
+    <div class="glass chart-card">
+      <h3><span class="indicator" style="background:var(--blue)"></span>Episode Rewards</h3>
+      <div class="chart-wrap"><canvas id="chartRewards"></canvas></div>
+    </div>
+    <div class="glass chart-card">
+      <h3><span class="indicator" style="background:var(--amber)"></span>Average Queue Length</h3>
+      <div class="chart-wrap"><canvas id="chartQueues"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ═══ Agent vs Baseline ═══ -->
+  <div class="section-title fade-up"><div class="dot" style="background:var(--green)"></div> Agent vs Baseline Comparison</div>
+  <div class="charts-row fade-up">
+    <div class="glass chart-card">
+      <h3><span class="indicator" style="background:var(--green)"></span>Performance Metrics</h3>
+      <div class="bar-chart-container"><canvas id="chartBars"></canvas></div>
+      <div class="bar-legend">
+        <div class="bar-legend-item"><div class="bar-legend-swatch" style="background:var(--green)"></div>DQN Agent</div>
+        <div class="bar-legend-item"><div class="bar-legend-swatch" style="background:var(--amber)"></div>Fixed-Timer Baseline</div>
+      </div>
+    </div>
+    <div class="glass chart-card">
+      <h3><span class="indicator" style="background:var(--red)"></span>Live Intersection Replay</h3>
+      <div class="replay-controls">
+        <button class="btn active" id="btnPlay" onclick="togglePlay()">▶ Play</button>
+        <button class="btn" id="btnReset" onclick="resetReplay()">↺ Reset</button>
+        <div class="speed-controls">
+          <button class="speed-btn" data-speed="2" onclick="setSpeed(2,this)">0.5×</button>
+          <button class="speed-btn active" data-speed="5" onclick="setSpeed(5,this)">1×</button>
+          <button class="speed-btn" data-speed="10" onclick="setSpeed(10,this)">2×</button>
+          <button class="speed-btn" data-speed="20" onclick="setSpeed(20,this)">4×</button>
+        </div>
+        <span class="step-display" id="stepDisplay">Step 0 / 300</span>
+      </div>
+      <div class="intersection-container" id="intersectionContainer"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Per-Lane Queue ═══ -->
+  <div class="section-title fade-up"><div class="dot" style="background:var(--cyan)"></div> Per-Lane Queue Analysis</div>
+  <div class="fade-up" style="margin-bottom:40px">
+    <div class="glass chart-card">
+      <h3><span class="indicator" style="background:var(--cyan)"></span>Queue Length by Direction (Agent Evaluation)</h3>
+      <div class="chart-wrap"><canvas id="chartLanes"></canvas></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:var(--blue)"></div>North</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:var(--cyan)"></div>South</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:var(--amber)"></div>East</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:var(--red)"></div>West</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Epsilon Decay ═══ -->
+  <div class="section-title fade-up"><div class="dot" style="background:var(--purple)"></div> Exploration Rate Decay</div>
+  <div class="epsilon-section fade-up">
+    <div class="glass epsilon-card">
+      <h3><span class="indicator" style="background:var(--purple)"></span>Epsilon (ε) Over Training</h3>
+      <div class="epsilon-chart-wrap"><canvas id="chartEpsilon"></canvas></div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ═══ Error State ═══ -->
+<div class="container" id="errorState" style="display:none">
+  <div class="error-state">
+    <div class="icon">🚧</div>
+    <h2>No Data Found</h2>
+    <p>Run the training script first to generate the dashboard data file.</p>
+    <code>python train_dqn.py</code>
+  </div>
+</div>
+
+<!-- ═══ Footer ═══ -->
+<div class="container">
+  <footer class="footer" id="footer" style="display:none">
+    Built with <span>PyTorch + Gymnasium</span> &nbsp;·&nbsp; DQN Reinforcement Learning &nbsp;·&nbsp; Visualized in pure HTML5 Canvas
+  </footer>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   DATA & INIT
+   ════════════════════════════════════════════════════════ */
+let DATA=null;
+const DPR=window.devicePixelRatio||1;
+
+async function init(){
+  initParticles();
+  try{
+    const r=await fetch('dashboard_data.json');
+    if(!r.ok) throw new Error(r.statusText);
+    DATA=await r.json();
+    document.getElementById('dashboard').style.display='';
+    document.getElementById('footer').style.display='';
+    populateCards();
+    setupIntersection();
+    observeFadeUps();
+    initAllCharts();
+  }catch(e){
+    console.warn('Dashboard data not found:',e);
+    document.getElementById('errorState').style.display='';
+  }
+}
+document.addEventListener('DOMContentLoaded',init);
+
+/* ════════════════════════════════════════════════════════
+   PARTICLES (Hero Background)
+   ════════════════════════════════════════════════════════ */
+function initParticles(){
+  const c=document.getElementById('particleCanvas');
+  const ctx=c.getContext('2d');
+  let W,H;
+  const particles=[];
+  const COUNT=55;
+  function resize(){W=c.width=c.offsetWidth*DPR;H=c.height=c.offsetHeight*DPR;ctx.scale(DPR,DPR)}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<COUNT;i++){
+    particles.push({
+      x:Math.random()*c.offsetWidth,y:Math.random()*c.offsetHeight,
+      r:Math.random()*1.8+.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25,
+      o:Math.random()*.35+.08
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,c.offsetWidth,c.offsetHeight);
+    const w=c.offsetWidth,h=c.offsetHeight;
+    for(const p of particles){
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0)p.x=w;if(p.x>w)p.x=0;
+      if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(148,163,184,${p.o})`;ctx.fill();
+    }
+    // subtle connecting lines
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<110){
+          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(148,163,184,${.06*(1-d/110)})`;
+          ctx.lineWidth=.6;ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ════════════════════════════════════════════════════════
+   INTERSECTION OBSERVER — FADE-UP & COUNT-UP
+   ════════════════════════════════════════════════════════ */
+function observeFadeUps(){
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        // count-up for cards inside
+        e.target.querySelectorAll('.card-value[data-target]').forEach(el=>{
+          animateValue(el);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+}
+
+function animateValue(el){
+  const target=parseFloat(el.dataset.target);
+  const decimals=parseInt(el.dataset.decimals)||0;
+  const suffix=el.dataset.suffix||'';
+  const duration=1400;
+  const start=performance.now();
+  function tick(now){
+    const t=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-t,4); // ease-out quart
+    const v=(ease*target);
+    el.textContent=(decimals?v.toFixed(decimals):Math.round(v))+suffix;
+    if(t<1)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function populateCards(){
+  const s=DATA.summary;
+  document.getElementById('val-improvement').dataset.target=s.improvement_pct.toFixed(1);
+  document.getElementById('val-improvement').dataset.suffix='%';
+  document.getElementById('val-improvement').dataset.decimals='1';
+  document.getElementById('val-episodes').dataset.target=s.episodes_trained;
+  document.getElementById('val-agent-q').dataset.target=s.agent_avg_queue.toFixed(2);
+  document.getElementById('val-agent-q').dataset.decimals='2';
+  document.getElementById('val-baseline-q').dataset.target=s.baseline_avg_queue.toFixed(2);
+  document.getElementById('val-baseline-q').dataset.decimals='2';
+}
+
+/* ════════════════════════════════════════════════════════
+   CANVAS CHART UTILITIES
+   ════════════════════════════════════════════════════════ */
+function setupCanvas(canvas){
+  const rect=canvas.parentElement.getBoundingClientRect();
+  const w=rect.width, h=rect.height;
+  canvas.width=w*DPR;canvas.height=h*DPR;
+  canvas.style.width=w+'px';canvas.style.height=h+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(DPR,DPR);
+  return{ctx,w,h};
+}
+
+function movingAverage(arr,window){
+  const out=[];
+  for(let i=0;i<arr.length;i++){
+    const start=Math.max(0,i-window+1);
+    let sum=0;for(let j=start;j<=i;j++)sum+=arr[j];
+    out.push(sum/(i-start+1));
+  }
+  return out;
+}
+
+function drawGrid(ctx,w,h,pad,yMin,yMax,xLen,xLabel,yLabel){
+  const pw=w-pad.l-pad.r, ph=h-pad.t-pad.b;
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=.8;
+  // horizontal grid
+  const yTicks=5;
+  ctx.font='500 10px Inter';ctx.fillStyle='rgba(148,163,184,.7)';ctx.textAlign='right';ctx.textBaseline='middle';
+  for(let i=0;i<=yTicks;i++){
+    const y=pad.t+ph*(1-i/yTicks);
+    const val=yMin+(yMax-yMin)*(i/yTicks);
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+pw,y);ctx.stroke();
+    ctx.fillText(formatTick(val),pad.l-8,y);
+  }
+  // vertical grid
+  const xTicks=5;
+  ctx.textAlign='center';ctx.textBaseline='top';
+  for(let i=0;i<=xTicks;i++){
+    const x=pad.l+pw*(i/xTicks);
+    const val=Math.round(xLen*(i/xTicks));
+    ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,pad.t+ph);ctx.stroke();
+    ctx.fillText(val,x,pad.t+ph+6);
+  }
+  // axis labels
+  ctx.fillStyle='rgba(148,163,184,.5)';ctx.font='500 10px Inter';
+  ctx.textAlign='center';
+  ctx.fillText(xLabel,pad.l+pw/2,h-4);
+  ctx.save();ctx.translate(10,pad.t+ph/2);ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center';ctx.fillText(yLabel,0,0);ctx.restore();
+}
+
+function formatTick(v){
+  if(Math.abs(v)>=1000)return(v/1000).toFixed(1)+'k';
+  if(Math.abs(v)<10&&v%1!==0)return v.toFixed(1);
+  return Math.round(v).toString();
+}
+
+/* ── Animated Line Chart ── */
+function drawAnimatedLineChart(canvas,data,color,gradColorTop,smoothWindow,xLabel,yLabel){
+  const{ctx,w,h}=setupCanvas(canvas);
+  const pad={t:16,r:16,b:30,l:50};
+  const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+
+  let mn=Infinity,mx=-Infinity;
+  for(const v of data){if(v<mn)mn=v;if(v>mx)mx=v}
+  const range=mx-mn||1;
+  mn-=range*.05;mx+=range*.05;
+
+  const smoothed=movingAverage(data,smoothWindow||20);
+
+  drawGrid(ctx,w,h,pad,mn,mx,data.length,xLabel||'Episode',yLabel||'Value');
+
+  function toX(i){return pad.l+pw*(i/(data.length-1))}
+  function toY(v){return pad.t+ph*(1-(v-mn)/(mx-mn))}
+
+  const totalFrames=90;let frame=0;
+  function render(){
+    const frac=Math.min(frame/totalFrames,1);
+    const ease=1-Math.pow(1-frac,3);
+    const visibleCount=Math.max(2,Math.floor(data.length*ease));
+
+    // clear only chart area
+    ctx.clearRect(pad.l-1,pad.t-1,pw+2,ph+2);
+
+    // gradient fill
+    ctx.beginPath();ctx.moveTo(toX(0),toY(data[0]));
+    for(let i=1;i<visibleCount;i++)ctx.lineTo(toX(i),toY(data[i]));
+    ctx.lineTo(toX(visibleCount-1),pad.t+ph);ctx.lineTo(toX(0),pad.t+ph);ctx.closePath();
+    const grd=ctx.createLinearGradient(0,pad.t,0,pad.t+ph);
+    grd.addColorStop(0,gradColorTop||'rgba(59,130,246,.22)');
+    grd.addColorStop(1,'rgba(59,130,246,0)');
+    ctx.fillStyle=grd;ctx.fill();
+
+    // raw line
+    ctx.beginPath();ctx.moveTo(toX(0),toY(data[0]));
+    for(let i=1;i<visibleCount;i++)ctx.lineTo(toX(i),toY(data[i]));
+    ctx.strokeStyle=color||'rgba(59,130,246,.35)';ctx.lineWidth=1;ctx.stroke();
+
+    // smoothed line
+    ctx.beginPath();ctx.moveTo(toX(0),toY(smoothed[0]));
+    for(let i=1;i<visibleCount;i++)ctx.lineTo(toX(i),toY(smoothed[i]));
+    ctx.strokeStyle=color?color.replace(/[\d.]+\)$/,'1)'):'rgba(59,130,246,1)';
+    ctx.lineWidth=2;ctx.stroke();
+
+    // endpoint glow
+    if(visibleCount>1){
+      const ex=toX(visibleCount-1),ey=toY(smoothed[visibleCount-1]);
+      ctx.beginPath();ctx.arc(ex,ey,4,0,Math.PI*2);
+      ctx.fillStyle=color?color.replace(/[\d.]+\)$/,'1)'):'#3b82f6';ctx.fill();
+      ctx.beginPath();ctx.arc(ex,ey,8,0,Math.PI*2);
+      ctx.fillStyle=color?color.replace(/[\d.]+\)$/,'.2)'):'rgba(59,130,246,.2)';ctx.fill();
+    }
+
+    frame++;
+    if(frame<=totalFrames)requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* ════════════════════════════════════════════════════════
+   INIT ALL CHARTS
+   ════════════════════════════════════════════════════════ */
+function initAllCharts(){
+  // Observe charts to start animation when visible
+  const chartObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id=e.target.id;
+        if(id==='chartRewards')drawRewardsChart();
+        else if(id==='chartQueues')drawQueuesChart();
+        else if(id==='chartBars')drawBarChart();
+        else if(id==='chartLanes')drawLanesChart();
+        else if(id==='chartEpsilon')drawEpsilonChart();
+        chartObs.unobserve(e.target);
+      }
+    });
+  },{threshold:.1});
+  ['chartRewards','chartQueues','chartBars','chartLanes','chartEpsilon'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)chartObs.observe(el);
+  });
+
+  // resize handler
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(()=>{
+      drawRewardsChart();drawQueuesChart();drawBarChart();drawLanesChart();drawEpsilonChart();
+      rebuildIntersectionSVG();
+    },250);
+  });
+}
+
+function drawRewardsChart(){
+  drawAnimatedLineChart(
+    document.getElementById('chartRewards'),
+    DATA.training.episode_rewards,
+    'rgba(59,130,246,.5)','rgba(59,130,246,.18)',20,'Episode','Reward'
+  );
+}
+function drawQueuesChart(){
+  drawAnimatedLineChart(
+    document.getElementById('chartQueues'),
+    DATA.training.episode_avg_queues,
+    'rgba(245,158,11,.5)','rgba(245,158,11,.15)',20,'Episode','Avg Queue'
+  );
+}
+
+/* ── Epsilon Chart ── */
+function drawEpsilonChart(){
+  drawAnimatedLineChart(
+    document.getElementById('chartEpsilon'),
+    DATA.training.episode_epsilons,
+    'rgba(168,85,247,.5)','rgba(168,85,247,.15)',1,'Episode','Epsilon (ε)'
+  );
+}
+
+/* ── Multi-line Lanes Chart ── */
+function drawLanesChart(){
+  const canvas=document.getElementById('chartLanes');
+  const{ctx,w,h}=setupCanvas(canvas);
+  const pad={t:16,r:16,b:30,l:50};
+  const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+
+  const ae=DATA.agent_eval;
+  const series=[
+    {data:ae.north,color:'#3b82f6'},
+    {data:ae.south,color:'#06b6d4'},
+    {data:ae.east,color:'#f59e0b'},
+    {data:ae.west,color:'#ef4444'}
+  ];
+  let mn=Infinity,mx=-Infinity;
+  for(const s of series)for(const v of s.data){if(v<mn)mn=v;if(v>mx)mx=v}
+  const range=mx-mn||1;mn=Math.max(0,mn-range*.05);mx+=range*.05;
+
+  drawGrid(ctx,w,h,pad,mn,mx,ae.north.length,'Step','Queue Length');
+
+  function toX(i){return pad.l+pw*(i/(ae.north.length-1))}
+  function toY(v){return pad.t+ph*(1-(v-mn)/(mx-mn))}
+
+  const totalFrames=80;let frame=0;
+  function render(){
+    const frac=Math.min(frame/totalFrames,1);
+    const ease=1-Math.pow(1-frac,3);
+    const vis=Math.max(2,Math.floor(ae.north.length*ease));
+
+    ctx.clearRect(pad.l-1,pad.t-1,pw+2,ph+2);
+
+    for(const s of series){
+      ctx.beginPath();ctx.moveTo(toX(0),toY(s.data[0]));
+      for(let i=1;i<vis;i++)ctx.lineTo(toX(i),toY(s.data[i]));
+      ctx.strokeStyle=s.color;ctx.lineWidth=1.5;ctx.globalAlpha=.85;ctx.stroke();
+      ctx.globalAlpha=1;
+    }
+    frame++;
+    if(frame<=totalFrames)requestAnimationFrame(render);
+  }
+  render();
+}
+
+/* ── Bar Chart ── */
+function drawBarChart(){
+  const canvas=document.getElementById('chartBars');
+  const{ctx,w,h}=setupCanvas(canvas);
+  const pad={t:24,r:24,b:48,l:60};
+  const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+  const s=DATA.summary;
+
+  const groups=[
+    {label:'Avg Queue',agent:s.agent_avg_queue,baseline:s.baseline_avg_queue},
+    {label:'Cum. Wait',agent:s.agent_cumulative_wait,baseline:s.baseline_cumulative_wait}
+  ];
+
+  const totalFrames=60;let frame=0;
+  function render(){
+    ctx.clearRect(0,0,w,h);
+    const frac=Math.min(frame/totalFrames,1);
+    const ease=1-Math.pow(1-frac,4);
+
+    const groupW=pw/groups.length;
+    const barW=Math.min(groupW*.28,50);
+    const gap=barW*.35;
+
+    for(let g=0;g<groups.length;g++){
+      const gr=groups[g];
+      const maxVal=Math.max(gr.agent,gr.baseline)*1.15;
+      const cx=pad.l+groupW*(g+.5);
+
+      // agent bar
+      const aH=(gr.agent/maxVal)*ph*ease;
+      const ax=cx-barW-gap/2;
+      const agrd=ctx.createLinearGradient(0,pad.t+ph-aH,0,pad.t+ph);
+      agrd.addColorStop(0,'#22c55e');agrd.addColorStop(1,'#16a34a');
+      ctx.fillStyle=agrd;
+      ctx.beginPath();
+      roundRect(ctx,ax,pad.t+ph-aH,barW,aH,4);
+      ctx.fill();
+
+      // agent value
+      ctx.fillStyle='#f1f5f9';ctx.font='600 11px Inter';ctx.textAlign='center';
+      const aVal=g===0?gr.agent.toFixed(2):Math.round(gr.agent*ease);
+      ctx.fillText(g===0?(gr.agent*ease).toFixed(2):Math.round(gr.agent*ease),ax+barW/2,pad.t+ph-aH-8);
+
+      // baseline bar
+      const bH=(gr.baseline/maxVal)*ph*ease;
+      const bx=cx+gap/2;
+      const bgrd=ctx.createLinearGradient(0,pad.t+ph-bH,0,pad.t+ph);
+      bgrd.addColorStop(0,'#f59e0b');bgrd.addColorStop(1,'#d97706');
+      ctx.fillStyle=bgrd;
+      ctx.beginPath();
+      roundRect(ctx,bx,pad.t+ph-bH,barW,bH,4);
+      ctx.fill();
+
+      const bVal=g===0?(gr.baseline*ease).toFixed(2):Math.round(gr.baseline*ease);
+      ctx.fillStyle='#f1f5f9';
+      ctx.fillText(bVal,bx+barW/2,pad.t+ph-bH-8);
+
+      // label
+      ctx.fillStyle='rgba(148,163,184,.8)';ctx.font='500 11px Inter';
+      ctx.fillText(gr.label,cx,pad.t+ph+22);
+    }
+
+    // base line
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.l,pad.t+ph);ctx.lineTo(pad.l+pw,pad.t+ph);ctx.stroke();
+
+    frame++;
+    if(frame<=totalFrames)requestAnimationFrame(render);
+  }
+  render();
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  if(h<0){y+=h;h=-h}
+  r=Math.min(r,w/2,h/2);
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h);ctx.lineTo(x,y+h);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+}
+
+/* ════════════════════════════════════════════════════════
+   INTERSECTION REPLAY (SVG)
+   ════════════════════════════════════════════════════════ */
+let replayStep=0,replayPlaying=true,replaySpeed=5,replayInterval=null;
+
+function setupIntersection(){
+  rebuildIntersectionSVG();
+  startReplay();
+}
+
+function rebuildIntersectionSVG(){
+  const cont=document.getElementById('intersectionContainer');
+  const sz=380;
+  const roadW=70, halfRoad=roadW/2;
+  const cx=sz/2,cy=sz/2;
+
+  let svg=`<svg viewBox="0 0 ${sz} ${sz}" xmlns="http://www.w3.org/2000/svg" id="intSvg">`;
+  // background
+  svg+=`<rect width="${sz}" height="${sz}" fill="#0d1117" rx="12"/>`;
+
+  // roads
+  svg+=`<rect x="${cx-halfRoad}" y="0" width="${roadW}" height="${sz}" fill="#1e293b"/>`;
+  svg+=`<rect x="0" y="${cy-halfRoad}" width="${sz}" height="${roadW}" fill="#1e293b"/>`;
+
+  // center intersection fill
+  svg+=`<rect x="${cx-halfRoad}" y="${cy-halfRoad}" width="${roadW}" height="${roadW}" fill="#1e293b"/>`;
+
+  // lane markings (dashed)
+  const dashAttrs=`stroke="#334155" stroke-width="1.5" stroke-dasharray="8 6"`;
+  // vertical center line
+  svg+=`<line x1="${cx}" y1="0" x2="${cx}" y2="${cy-halfRoad}" ${dashAttrs}/>`;
+  svg+=`<line x1="${cx}" y1="${cy+halfRoad}" x2="${cx}" y2="${sz}" ${dashAttrs}/>`;
+  // horizontal center line
+  svg+=`<line x1="0" y1="${cy}" x2="${cx-halfRoad}" y2="${cy}" ${dashAttrs}/>`;
+  svg+=`<line x1="${cx+halfRoad}" y1="${cy}" x2="${sz}" y2="${cy}" ${dashAttrs}/>`;
+
+  // crosswalk hatching
+  const cwW=6,cwGap=4;
+  for(let i=-halfRoad+4;i<halfRoad-4;i+=cwW+cwGap){
+    // North crosswalk
+    svg+=`<rect x="${cx+i}" y="${cy-halfRoad-3}" width="${cwW}" height="3" fill="#334155" rx="1"/>`;
+    // South crosswalk
+    svg+=`<rect x="${cx+i}" y="${cy+halfRoad}" width="${cwW}" height="3" fill="#334155" rx="1"/>`;
+    // East crosswalk
+    svg+=`<rect x="${cx+halfRoad}" y="${cy+i}" width="3" height="${cwW}" fill="#334155" rx="1"/>`;
+    // West crosswalk
+    svg+=`<rect x="${cx-halfRoad-3}" y="${cy+i}" width="3" height="${cwW}" fill="#334155" rx="1"/>`;
+  }
+
+  // Traffic lights (circles) — will be updated
+  // North light (top of intersection)
+  svg+=`<circle id="light-ns" cx="${cx-18}" cy="${cy-halfRoad-12}" r="6" fill="#ef4444"/>`;
+  // South light (bottom)
+  svg+=`<circle id="light-ns2" cx="${cx+18}" cy="${cy+halfRoad+12}" r="6" fill="#ef4444"/>`;
+  // East light
+  svg+=`<circle id="light-ew" cx="${cx+halfRoad+12}" cy="${cy-18}" r="6" fill="#ef4444"/>`;
+  // West light
+  svg+=`<circle id="light-ew2" cx="${cx-halfRoad-12}" cy="${cy+18}" r="6" fill="#ef4444"/>`;
+
+  // light housings
+  svg+=`<rect x="${cx-24}" y="${cy-halfRoad-20}" width="12" height="16" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1"/>`;
+  svg+=`<rect x="${cx+12}" y="${cy+halfRoad+4}" width="12" height="16" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1"/>`;
+  svg+=`<rect x="${cx+halfRoad+4}" y="${cy-24}" width="16" height="12" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1"/>`;
+  svg+=`<rect x="${cx-halfRoad-20}" y="${cy+12}" width="16" height="12" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1"/>`;
+
+  // Queue car placeholders — groups that we'll populate dynamically
+  svg+=`<g id="cars-north"></g>`;
+  svg+=`<g id="cars-south"></g>`;
+  svg+=`<g id="cars-east"></g>`;
+  svg+=`<g id="cars-west"></g>`;
+
+  // Direction labels
+  const lblStyle=`font-family="Inter" font-size="10" font-weight="600" fill="#64748b"`;
+  svg+=`<text x="${cx}" y="16" text-anchor="middle" ${lblStyle}>N</text>`;
+  svg+=`<text x="${cx}" y="${sz-8}" text-anchor="middle" ${lblStyle}>S</text>`;
+  svg+=`<text x="${sz-10}" y="${cy+4}" text-anchor="end" ${lblStyle}>E</text>`;
+  svg+=`<text x="14" y="${cy+4}" ${lblStyle}>W</text>`;
+
+  svg+=`</svg>`;
+  cont.innerHTML=svg;
+}
+
+function updateIntersectionStep(step){
+  const ae=DATA.agent_eval;
+  if(step>=ae.north.length)return;
+
+  const action=ae.actions[step]; // 0=NS green, 1=EW green
+  const nsGreen=action===0;
+  const greenColor='#22c55e',redColor='#ef4444';
+
+  // Update lights
+  const setFill=(id,c)=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c)};
+  setFill('light-ns',nsGreen?greenColor:redColor);
+  setFill('light-ns2',nsGreen?greenColor:redColor);
+  setFill('light-ew',nsGreen?redColor:greenColor);
+  setFill('light-ew2',nsGreen?redColor:greenColor);
+
+  // add glow
+  const glowNS=nsGreen?greenColor:redColor;
+  const glowEW=nsGreen?redColor:greenColor;
+  ['light-ns','light-ns2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.setAttribute('style',`filter:drop-shadow(0 0 6px ${glowNS})`);
+  });
+  ['light-ew','light-ew2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.setAttribute('style',`filter:drop-shadow(0 0 6px ${glowEW})`);
+  });
+
+  const sz=380,cx=sz/2,cy=sz/2,halfRoad=35;
+  const carW=10,carH=6,carGap=2;
+
+  // draw cars as small rects
+  function drawCars(groupId,count,dir){
+    const g=document.getElementById(groupId);
+    if(!g)return;
+    const maxCars=Math.min(count,14);
+    let html='';
+    for(let i=0;i<maxCars;i++){
+      let x,y,cw,ch;
+      const col=count>8?'#ef4444':count>4?'#f59e0b':'#22c55e';
+      if(dir==='north'){
+        cw=carH;ch=carW;
+        x=cx-halfRoad+8;
+        y=cy-halfRoad-16-(carW+carGap)*i;
+      }else if(dir==='south'){
+        cw=carH;ch=carW;
+        x=cx+halfRoad-8-carH;
+        y=cy+halfRoad+6+(carW+carGap)*i;
+      }else if(dir==='east'){
+        cw=carW;ch=carH;
+        x=cx+halfRoad+6+(carW+carGap)*i;
+        y=cy-halfRoad+8;
+      }else{
+        cw=carW;ch=carH;
+        x=cx-halfRoad-6-(carW+carGap)*i-carW;
+        y=cy+halfRoad-8-carH;
+      }
+      html+=`<rect x="${x}" y="${y}" width="${cw}" height="${ch}" rx="2" fill="${col}" opacity=".85">`;
+      html+=`<animate attributeName="opacity" from="0" to=".85" dur=".2s" fill="freeze"/>`;
+      html+=`</rect>`;
+    }
+    // count badge
+    if(count>0){
+      let bx,by;
+      if(dir==='north'){bx=cx-halfRoad+20;by=cy-halfRoad-18-(carW+carGap)*Math.min(maxCars,3)-2}
+      else if(dir==='south'){bx=cx+halfRoad-20;by=cy+halfRoad+14+(carW+carGap)*Math.min(maxCars,3)+12}
+      else if(dir==='east'){bx=cx+halfRoad+14+(carW+carGap)*Math.min(maxCars,3)+12;by=cy-halfRoad+14}
+      else{bx=cx-halfRoad-14-(carW+carGap)*Math.min(maxCars,3)-18;by=cy+halfRoad-14}
+      html+=`<text x="${bx}" y="${by}" font-family="Inter" font-size="9" font-weight="700" fill="#94a3b8" text-anchor="middle">${count}</text>`;
+    }
+    g.innerHTML=html;
+  }
+
+  drawCars('cars-north',ae.north[step],'north');
+  drawCars('cars-south',ae.south[step],'south');
+  drawCars('cars-east',ae.east[step],'east');
+  drawCars('cars-west',ae.west[step],'west');
+
+  document.getElementById('stepDisplay').textContent=`Step ${step+1} / ${ae.north.length}`;
+}
+
+function startReplay(){
+  if(replayInterval)clearInterval(replayInterval);
+  replayInterval=setInterval(()=>{
+    if(!replayPlaying)return;
+    updateIntersectionStep(replayStep);
+    replayStep++;
+    if(replayStep>=DATA.agent_eval.north.length)replayStep=0;
+  },1000/replaySpeed);
+}
+
+function togglePlay(){
+  replayPlaying=!replayPlaying;
+  const btn=document.getElementById('btnPlay');
+  btn.textContent=replayPlaying?'⏸ Pause':'▶ Play';
+  btn.classList.toggle('active',replayPlaying);
+}
+
+function resetReplay(){
+  replayStep=0;
+  updateIntersectionStep(0);
+}
+
+function setSpeed(spd,el){
+  replaySpeed=spd;
+  document.querySelectorAll('.speed-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  startReplay();
+}
+
+</script>
+</body>
+</html>
