@@ -14,6 +14,7 @@ type TrafficData = {
   pedestrians_B: number;
   action_A: string;
   action_B: string;
+  xai_A?: string;
   xai_B?: string;
   emergency_A?: string | null;
   emergency_B?: string | null;
