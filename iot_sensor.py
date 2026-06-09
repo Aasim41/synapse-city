@@ -60,6 +60,7 @@ class MultiIntersectionEnv:
         yellow_cap = 2
         
         cleared_A_east = 0
+        cleared_B_west = 0
         
         # Intersection A
         if action_A == "GREEN_NS":
@@ -79,24 +80,27 @@ class MultiIntersectionEnv:
         elif action_A == "ALL_RED":
             self.pedestrians_A = 0 # Pedestrians cleared
 
-        # GREEN WAVE PHYSICS
-        self.queues["B_west"] += cleared_A_east
-        
         # Intersection B
         if action_B == "GREEN_NS":
             self.queues["B_north"] = max(0, self.queues["B_north"] - clear_cap)
             self.queues["B_south"] = max(0, self.queues["B_south"] - clear_cap)
         elif action_B == "GREEN_EW":
             self.queues["B_east"] = max(0, self.queues["B_east"] - clear_cap)
-            self.queues["B_west"] = max(0, self.queues["B_west"] - clear_cap)
+            cleared_B_west = min(clear_cap, self.queues["B_west"])
+            self.queues["B_west"] -= cleared_B_west
         elif action_B == "YELLOW_NS":
             self.queues["B_north"] = max(0, self.queues["B_north"] - yellow_cap)
             self.queues["B_south"] = max(0, self.queues["B_south"] - yellow_cap)
         elif action_B == "YELLOW_EW":
             self.queues["B_east"] = max(0, self.queues["B_east"] - yellow_cap)
-            self.queues["B_west"] = max(0, self.queues["B_west"] - yellow_cap)
+            cleared_B_west = min(yellow_cap, self.queues["B_west"])
+            self.queues["B_west"] -= cleared_B_west
         elif action_B == "ALL_RED":
             self.pedestrians_B = 0 # Pedestrians cleared
+
+        # GREEN WAVE PHYSICS (Transfer cars between intersections)
+        self.queues["B_east"] += cleared_A_east
+        self.queues["A_west"] += cleared_B_west
 
 def run_sensor():
     print("🚦 Multi-Intersection IoT Edge Sensor Started...")
