@@ -24,12 +24,14 @@ class MultiIntersectionEnv:
         # Base Traffic Generation
         if self.step_count % 40 < 20:
             self.queues["A_east"] += random.randint(2, 5) 
+            self.queues["B_west"] += random.randint(2, 5) 
             self.queues["A_north"] += random.randint(0, 1)
             self.queues["B_north"] += random.randint(0, 1)
         else:
             self.queues["A_north"] += random.randint(1, 3)
             self.queues["B_south"] += random.randint(1, 3)
             self.queues["A_east"] += random.randint(0, 1)
+            self.queues["B_west"] += random.randint(0, 1)
             
         # Rush Hour Overrides
         if self.current_rush_hour == "morning":
