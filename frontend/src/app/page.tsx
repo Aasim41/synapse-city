@@ -585,7 +585,7 @@ export default function Dashboard() {
                 {action_A === 'GREEN_EW' && (
                     <div className="absolute left-0 w-1/3 h-48 overflow-hidden" style={{ top: 'calc(50% - 96px)' }}>
                         {/* Eastbound lanes (top half) */}
-                        {data.active_incident !== 'A_west' && (
+                        {data.active_incident !== 'A_west' && emergency_A !== 'EW' && (
                           <>
                             <div className="f-ew bike"  style={{ top: '8%',  animation: 'flowEast 0.8s linear infinite 0s' }}></div>
                             <div className="f-ew car"   style={{ top: '22%', animation: 'flowEast 1.2s linear infinite 0.3s' }}></div>
@@ -593,7 +593,7 @@ export default function Dashboard() {
                           </>
                         )}
                         {/* Westbound lanes (bottom half) */}
-                        {data.active_incident !== 'A_east' && (
+                        {data.active_incident !== 'A_east' && emergency_A !== 'EW' && (
                           <>
                             <div className="f-ew truck" style={{ bottom: '6%',  animation: 'flowWest 1.8s linear infinite 0.1s' }}></div>
                             <div className="f-ew bike"  style={{ bottom: '22%', animation: 'flowWest 0.7s linear infinite 0.5s' }}></div>
@@ -606,7 +606,7 @@ export default function Dashboard() {
                 {/* EW flowing vehicles: Between A and B */}
                 {action_A === 'GREEN_EW' && (
                     <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ top: 'calc(50% - 96px)' }}>
-                        {data.active_incident !== 'A_west' && (
+                        {data.active_incident !== 'A_west' && emergency_A !== 'EW' && emergency_B !== 'EW' && (
                           <>
                             <div className="f-ew auto"  style={{ top: '8%',  animation: 'flowEast 1.0s linear infinite 0.2s' }}></div>
                             <div className="f-ew truck" style={{ top: '22%', animation: 'flowEast 1.7s linear infinite 0.6s' }}></div>
@@ -617,7 +617,7 @@ export default function Dashboard() {
                 )}
                 {action_B === 'GREEN_EW' && (
                     <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ top: 'calc(50% - 96px)' }}>
-                        {data.active_incident !== 'B_east' && (
+                        {data.active_incident !== 'B_east' && emergency_A !== 'EW' && emergency_B !== 'EW' && (
                           <>
                             <div className="f-ew car"   style={{ bottom: '8%',  animation: 'flowWest 1.2s linear infinite 0.3s' }}></div>
                             <div className="f-ew auto"  style={{ bottom: '22%', animation: 'flowWest 1.0s linear infinite 0.7s' }}></div>
@@ -631,7 +631,7 @@ export default function Dashboard() {
                 {action_B === 'GREEN_EW' && (
                     <div className="absolute left-2/3 w-1/3 h-48 overflow-hidden" style={{ top: 'calc(50% - 96px)' }}>
                         {/* Eastbound */}
-                        {data.active_incident !== 'B_west' && (
+                        {data.active_incident !== 'B_west' && emergency_B !== 'EW' && (
                           <>
                             <div className="f-ew car"   style={{ top: '8%',  animation: 'flowEast 1.3s linear infinite 0s' }}></div>
                             <div className="f-ew bike"  style={{ top: '22%', animation: 'flowEast 0.7s linear infinite 0.4s' }}></div>
@@ -639,7 +639,7 @@ export default function Dashboard() {
                           </>
                         )}
                         {/* Westbound */}
-                        {data.active_incident !== 'B_east' && (
+                        {data.active_incident !== 'B_east' && emergency_B !== 'EW' && (
                           <>
                             <div className="f-ew auto"  style={{ bottom: '8%',  animation: 'flowWest 1.0s linear infinite 0.5s' }}></div>
                             <div className="f-ew car"   style={{ bottom: '22%', animation: 'flowWest 1.2s linear infinite 0.8s' }}></div>
@@ -653,7 +653,7 @@ export default function Dashboard() {
                 {action_A === 'GREEN_NS' && (
                     <div className="absolute top-0 bottom-0 left-1/3 -translate-x-1/2 w-48 overflow-hidden">
                         {/* Southbound lanes (left half) */}
-                        {data.active_incident !== 'A_north' && (
+                        {data.active_incident !== 'A_north' && emergency_A !== 'NS' && (
                           <>
                             <div className="f-ns bike"  style={{ left: '8%',  animation: 'flowSouth 1.4s linear infinite 0s' }}></div>
                             <div className="f-ns car"   style={{ left: '22%', animation: 'flowSouth 2.2s linear infinite 0.5s' }}></div>
@@ -661,7 +661,7 @@ export default function Dashboard() {
                           </>
                         )}
                         {/* Northbound lanes (right half) */}
-                        {data.active_incident !== 'A_south' && (
+                        {data.active_incident !== 'A_south' && emergency_A !== 'NS' && (
                           <>
                             <div className="f-ns truck" style={{ right: '6%',  animation: 'flowNorth 3.0s linear infinite 0.2s' }}></div>
                             <div className="f-ns bike"  style={{ right: '22%', animation: 'flowNorth 1.3s linear infinite 0.7s' }}></div>
@@ -675,7 +675,7 @@ export default function Dashboard() {
                 {action_B === 'GREEN_NS' && (
                     <div className="absolute top-0 bottom-0 left-2/3 -translate-x-1/2 w-48 overflow-hidden">
                         {/* Southbound */}
-                        {data.active_incident !== 'B_north' && (
+                        {data.active_incident !== 'B_north' && emergency_B !== 'NS' && (
                           <>
                             <div className="f-ns auto"  style={{ left: '8%',  animation: 'flowSouth 1.7s linear infinite 0.4s' }}></div>
                             <div className="f-ns truck" style={{ left: '22%', animation: 'flowSouth 2.8s linear infinite 0s' }}></div>
@@ -683,7 +683,7 @@ export default function Dashboard() {
                           </>
                         )}
                         {/* Northbound */}
-                        {data.active_incident !== 'B_south' && (
+                        {data.active_incident !== 'B_south' && emergency_B !== 'NS' && (
                           <>
                             <div className="f-ns car"   style={{ right: '8%',  animation: 'flowNorth 2.0s linear infinite 0.3s' }}></div>
                             <div className="f-ns auto"  style={{ right: '22%', animation: 'flowNorth 1.6s linear infinite 0.8s' }}></div>
@@ -743,10 +743,10 @@ export default function Dashboard() {
                   </>
                 )}
                 {/* Lights */}
-                <div className={`absolute -top-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'NS')} z-20 group-hover:scale-110 transition-transform`}></div>
-                <div className={`absolute -bottom-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'NS')} z-20`}></div>
-                <div className={`absolute -top-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'EW')} z-20`}></div>
-                <div className={`absolute -bottom-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'EW')} z-20`}></div>
+                <div className={`absolute -top-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'EW')} z-20 group-hover:scale-110 transition-transform`} title="Westbound EW"></div>
+                <div className={`absolute -bottom-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'EW')} z-20`} title="Eastbound EW"></div>
+                <div className={`absolute -top-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'NS')} z-20`} title="Northbound NS"></div>
+                <div className={`absolute -bottom-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_A, 'NS')} z-20`} title="Southbound NS"></div>
                 
                 {/* ── Heatmap A ── */}
                 {heatmapOn && (
@@ -830,10 +830,10 @@ export default function Dashboard() {
                   </>
                 )}
                 {/* Lights */}
-                <div className={`absolute -top-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'NS')} z-20 group-hover:scale-110 transition-transform`}></div>
-                <div className={`absolute -bottom-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'NS')} z-20`}></div>
-                <div className={`absolute -top-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'EW')} z-20`}></div>
-                <div className={`absolute -bottom-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'EW')} z-20`}></div>
+                <div className={`absolute -top-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'EW')} z-20 group-hover:scale-110 transition-transform`} title="Westbound EW"></div>
+                <div className={`absolute -bottom-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'EW')} z-20`} title="Eastbound EW"></div>
+                <div className={`absolute -top-3 -right-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'NS')} z-20`} title="Northbound NS"></div>
+                <div className={`absolute -bottom-3 -left-3 w-5 h-5 rounded-full border-2 border-black/50 ${getLightColor(action_B, 'NS')} z-20`} title="Southbound NS"></div>
                 
                 {/* ── Heatmap B ── */}
                 {heatmapOn && (
