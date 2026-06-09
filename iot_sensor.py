@@ -27,8 +27,12 @@ class MultiIntersectionEnv:
             self.queues["B_west"] += random.randint(2, 5) 
             self.queues["A_north"] += random.randint(0, 1)
             self.queues["B_north"] += random.randint(0, 1)
+            self.queues["A_south"] += random.randint(1, 2)
+            self.queues["B_south"] += random.randint(1, 2)
         else:
             self.queues["A_north"] += random.randint(1, 3)
+            self.queues["B_north"] += random.randint(1, 3)
+            self.queues["A_south"] += random.randint(1, 3)
             self.queues["B_south"] += random.randint(1, 3)
             self.queues["A_east"] += random.randint(0, 1)
             self.queues["B_west"] += random.randint(0, 1)
