@@ -234,14 +234,19 @@ async def receive_sensor_data(payload: dict):
     emergency_A = payload.get("emergency_A", None)
     emergency_B = payload.get("emergency_B", None)
     
-    if emergency_A:
-        desired_A = f"GREEN_{emergency_A}"
-        xai_A = f"🚨 EMERGENCY OVERRIDE: Ambulance approaching {emergency_A}! Activating Green Wave."
-        
-    if emergency_B:
-        desired_B = f"GREEN_{emergency_B}"
-        xai_B = f"🚨 EMERGENCY OVERRIDE: Ambulance approaching {emergency_B}! Activating Green Wave."
-        
+    if emergency_A or emergency_B:
+        desired_A = "ALL_RED"
+        desired_B = "ALL_RED"
+        if emergency_A:
+            xai_A = f"🚨 EMERGENCY OVERRIDE: Ambulance approaching {emergency_A}! Stopping all traffic for emergency clearance."
+            xai_B = f"🚨 EMERGENCY OVERRIDE: Stopping traffic for ambulance at Intersection A."
+        if emergency_B:
+            xai_A = f"🚨 EMERGENCY OVERRIDE: Stopping traffic for ambulance at Intersection B."
+            xai_B = f"🚨 EMERGENCY OVERRIDE: Ambulance approaching {emergency_B}! Stopping all traffic for emergency clearance."
+        if emergency_A and emergency_B:
+            xai_A = f"🚨 EMERGENCY OVERRIDE: Ambulance approaching {emergency_A}! Stopping all traffic."
+            xai_B = f"🚨 EMERGENCY OVERRIDE: Ambulance approaching {emergency_B}! Stopping all traffic."
+            
     phase_A, phase_B = traffic_controller.update(desired_A, desired_B)
     
     response_data = {
