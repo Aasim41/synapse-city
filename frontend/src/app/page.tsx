@@ -607,8 +607,8 @@ export default function Dashboard() {
                 {action_A === 'GREEN_EW' && (
                     <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ 
                         top: 'calc(50% - 96px)',
-                        maskImage: action_B !== 'GREEN_EW' ? 'linear-gradient(to right, black 70%, transparent 95%)' : 'none',
-                        WebkitMaskImage: action_B !== 'GREEN_EW' ? 'linear-gradient(to right, black 70%, transparent 95%)' : 'none'
+                        maskImage: action_B !== 'GREEN_EW' ? 'linear-gradient(to right, black 88%, transparent 92%)' : 'none',
+                        WebkitMaskImage: action_B !== 'GREEN_EW' ? 'linear-gradient(to right, black 88%, transparent 92%)' : 'none'
                     }}>
                         {data.active_incident !== 'A_west' && emergency_A !== 'EW' && emergency_B !== 'EW' && (
                           <>
@@ -622,8 +622,8 @@ export default function Dashboard() {
                 {action_B === 'GREEN_EW' && (
                     <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ 
                         top: 'calc(50% - 96px)',
-                        maskImage: action_A !== 'GREEN_EW' ? 'linear-gradient(to left, black 70%, transparent 95%)' : 'none',
-                        WebkitMaskImage: action_A !== 'GREEN_EW' ? 'linear-gradient(to left, black 70%, transparent 95%)' : 'none'
+                        maskImage: action_A !== 'GREEN_EW' ? 'linear-gradient(to left, black 88%, transparent 92%)' : 'none',
+                        WebkitMaskImage: action_A !== 'GREEN_EW' ? 'linear-gradient(to left, black 88%, transparent 92%)' : 'none'
                     }}>
                         {data.active_incident !== 'B_east' && emergency_A !== 'EW' && emergency_B !== 'EW' && (
                           <>
