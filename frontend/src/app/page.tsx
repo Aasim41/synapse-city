@@ -767,7 +767,7 @@ export default function Dashboard() {
                 )}
                 
                 {/* Queues (Visual Blocks + Numbers) */}
-                <div className="absolute -top-20 left-1/2 -translate-x-3 flex flex-col-reverse gap-1 items-center z-10">
+                <div className="absolute bottom-[calc(100%+5px)] left-1/2 -translate-x-3 flex flex-col-reverse gap-1 items-center z-10">
                     <span className="text-xs font-bold text-red-300 bg-slate-900/90 px-1.5 rounded shadow">{A_north}</span>
                     {emergency_A === 'NS' ? (
                         <div className="w-4 h-8 bg-white rounded-sm animate-[sirenFlash_0.3s_infinite] shadow-[0_0_15px_white]"></div>
@@ -779,7 +779,8 @@ export default function Dashboard() {
                         ))
                     )}
                 </div>
-                <div className="absolute -bottom-20 left-1/2 -translate-x-2 flex flex-col gap-1 items-center z-10">
+                <div className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-2 flex flex-col gap-1 items-center z-10">
+                    <span className="text-xs font-bold text-red-300 bg-slate-900/90 px-1.5 rounded shadow">{A_south}</span>
                     {data.active_incident === 'A_south' ? (
                         <div className="text-2xl animate-pulse drop-shadow-md">💥</div>
                     ) : (
@@ -787,10 +788,9 @@ export default function Dashboard() {
                             <div key={i} className={getVehicleClass(i)}></div>
                         ))
                     )}
-                    <span className="text-xs font-bold text-red-300 bg-slate-900/90 px-1.5 rounded shadow">{A_south}</span>
                 </div>
-                <div className="absolute -left-20 top-1/2 -translate-y-2 flex gap-1 items-center z-10">
-                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow mr-1">{A_east}</span>
+                <div className="absolute right-[calc(100%+5px)] top-1/2 -translate-y-2 flex flex-row-reverse gap-1 items-center z-10">
+                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow ml-1">{A_east}</span>
                     {emergency_A === 'EW' ? (
                         <div className="w-8 h-4 bg-white rounded-sm animate-[sirenFlash_0.3s_infinite] shadow-[0_0_15px_white]"></div>
                     ) : data.active_incident === 'A_east' ? (
@@ -801,8 +801,8 @@ export default function Dashboard() {
                         ))
                     )}
                 </div>
-                <div className="absolute -right-20 top-1/2 -translate-y-2 flex flex-row-reverse gap-1 items-center z-10">
-                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow ml-1">{A_west}</span>
+                <div className="absolute left-[calc(100%+5px)] top-1/2 -translate-y-2 flex flex-row gap-1 items-center z-10">
+                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow mr-1">{A_west}</span>
                     {data.active_incident === 'A_west' ? (
                         <div className="text-2xl animate-pulse drop-shadow-md">💥</div>
                     ) : (
@@ -854,7 +854,7 @@ export default function Dashboard() {
                 )}
                 
                 {/* Queues (Visual Blocks + Numbers) */}
-                <div className="absolute -top-20 left-1/2 -translate-x-3 flex flex-col-reverse gap-1 items-center z-10">
+                <div className="absolute bottom-[calc(100%+5px)] left-1/2 -translate-x-3 flex flex-col-reverse gap-1 items-center z-10">
                     <span className="text-xs font-bold text-red-300 bg-slate-900/90 px-1.5 rounded shadow">{B_north}</span>
                     {emergency_B === 'NS' ? (
                         <div className="w-4 h-8 bg-white rounded-sm animate-[sirenFlash_0.3s_infinite] shadow-[0_0_15px_white]"></div>
@@ -866,7 +866,8 @@ export default function Dashboard() {
                         ))
                     )}
                 </div>
-                <div className="absolute -bottom-20 left-1/2 -translate-x-2 flex flex-col gap-1 items-center z-10">
+                <div className="absolute top-[calc(100%+5px)] left-1/2 -translate-x-2 flex flex-col gap-1 items-center z-10">
+                    <span className="text-xs font-bold text-red-300 bg-slate-900/90 px-1.5 rounded shadow">{B_south}</span>
                     {data.active_incident === 'B_south' ? (
                         <div className="text-2xl animate-pulse drop-shadow-md">💥</div>
                     ) : (
@@ -874,10 +875,9 @@ export default function Dashboard() {
                             <div key={i} className={getVehicleClass(i)}></div>
                         ))
                     )}
-                    <span className="text-xs font-bold text-red-300 bg-slate-900/90 px-1.5 rounded shadow">{B_south}</span>
                 </div>
-                <div className="absolute -left-20 top-1/2 -translate-y-2 flex gap-1 items-center z-10">
-                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow mr-1">{B_east}</span>
+                <div className="absolute right-[calc(100%+5px)] top-1/2 -translate-y-2 flex flex-row-reverse gap-1 items-center z-10">
+                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow ml-1">{B_east}</span>
                     {emergency_B === 'EW' ? (
                         <div className="w-8 h-4 bg-white rounded-sm animate-[sirenFlash_0.3s_infinite] shadow-[0_0_15px_white]"></div>
                     ) : data.active_incident === 'B_east' ? (
@@ -888,8 +888,8 @@ export default function Dashboard() {
                         ))
                     )}
                 </div>
-                <div className="absolute -right-20 top-1/2 -translate-y-2 flex flex-row-reverse gap-1 items-center z-10">
-                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow ml-1">{B_west}</span>
+                <div className="absolute left-[calc(100%+5px)] top-1/2 -translate-y-2 flex flex-row gap-1 items-center z-10">
+                    <span className="text-xs font-bold text-blue-300 bg-slate-900/90 px-1.5 rounded shadow mr-1">{B_west}</span>
                     {data.active_incident === 'B_west' ? (
                         <div className="text-2xl animate-pulse drop-shadow-md">💥</div>
                     ) : (
