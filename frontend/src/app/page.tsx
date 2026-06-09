@@ -605,7 +605,11 @@ export default function Dashboard() {
 
                 {/* EW flowing vehicles: Between A and B */}
                 {action_A === 'GREEN_EW' && (
-                    <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ top: 'calc(50% - 96px)' }}>
+                    <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ 
+                        top: 'calc(50% - 96px)',
+                        maskImage: action_B !== 'GREEN_EW' ? 'linear-gradient(to right, black 70%, transparent 95%)' : 'none',
+                        WebkitMaskImage: action_B !== 'GREEN_EW' ? 'linear-gradient(to right, black 70%, transparent 95%)' : 'none'
+                    }}>
                         {data.active_incident !== 'A_west' && emergency_A !== 'EW' && emergency_B !== 'EW' && (
                           <>
                             <div className="f-ew auto"  style={{ top: '8%',  animation: 'flowEast 1.0s linear infinite 0.2s' }}></div>
@@ -616,7 +620,11 @@ export default function Dashboard() {
                     </div>
                 )}
                 {action_B === 'GREEN_EW' && (
-                    <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ top: 'calc(50% - 96px)' }}>
+                    <div className="absolute left-1/3 w-1/3 h-48 overflow-hidden" style={{ 
+                        top: 'calc(50% - 96px)',
+                        maskImage: action_A !== 'GREEN_EW' ? 'linear-gradient(to left, black 70%, transparent 95%)' : 'none',
+                        WebkitMaskImage: action_A !== 'GREEN_EW' ? 'linear-gradient(to left, black 70%, transparent 95%)' : 'none'
+                    }}>
                         {data.active_incident !== 'B_east' && emergency_A !== 'EW' && emergency_B !== 'EW' && (
                           <>
                             <div className="f-ew car"   style={{ bottom: '8%',  animation: 'flowWest 1.2s linear infinite 0.3s' }}></div>
