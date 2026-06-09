@@ -415,28 +415,6 @@ export default function Dashboard() {
             🗺️ Heatmap {heatmapOn ? 'ON' : 'OFF'}
           </button>
 
-          {/* Incident Simulator */}
-          <div className="flex items-center gap-2">
-            <select 
-              value={activeIncidentLocal}
-              onChange={(e) => {
-                const val = e.target.value as any;
-                setActiveIncidentLocal(val);
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-                fetch(`${apiUrl}/api/incident`, {
-                  method: "POST", headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ location: val })
-                });
-              }}
-              className={`px-3 py-2 rounded-xl text-sm font-semibold border outline-none appearance-none cursor-pointer ${activeIncidentLocal !== 'none' ? 'bg-rose-500/20 text-rose-400 border-rose-500/40 animate-pulse' : (isNight ? 'bg-slate-700/40 text-slate-400 border-slate-600' : 'bg-white/50 text-slate-500 border-slate-300')}`}
-            >
-              <option value="none">✔️ No Incidents</option>
-              <option value="A_east">⚠️ Crash on A East</option>
-              <option value="A_north">⚠️ Crash on A North</option>
-              <option value="B_east">⚠️ Crash on B East</option>
-              <option value="B_south">⚠️ Crash on B South</option>
-            </select>
-          </div>
 
           {/* Rush Hour Simulator */}
           <div className="flex items-center gap-2">
