@@ -989,6 +989,7 @@ export default function Dashboard() {
                         <Line type="monotone" dataKey="A_east" name="East Queue (A)" stroke="#10b981" strokeWidth={2} dot={false} />
                         <Line type="monotone" dataKey="B_west" name="West Queue (B)" stroke="#3b82f6" strokeWidth={2} dot={false} />
                         <Line type="monotone" dataKey="A_north" name="North Queue (A)" stroke="#8b5cf6" strokeWidth={2} dot={false} />
+                        <Line type="monotone" dataKey="A_south" name="South Queue (A)" stroke="#f43f5e" strokeWidth={2} dot={false} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
@@ -1004,7 +1005,8 @@ export default function Dashboard() {
                             time: h.time,
                             A_east_base: Math.round(h.A_east * 4.6 + 15),
                             B_west_base: Math.round(h.B_west * 4.5 + 12),
-                            A_north_base: Math.round(h.A_north * 4.4 + 18)
+                            A_north_base: Math.round(h.A_north * 4.4 + 18),
+                            A_south_base: Math.round(h.A_south * 4.3 + 14)
                         }))}>
                         <XAxis dataKey="time" stroke={isNight ? "#475569" : "#94a3b8"} fontSize={12} tickMargin={10} />
                         <YAxis stroke={isNight ? "#475569" : "#94a3b8"} fontSize={12} />
@@ -1015,6 +1017,7 @@ export default function Dashboard() {
                         <Line type="monotone" dataKey="A_east_base" name="East Queue (A)" stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 5" dot={false} />
                         <Line type="monotone" dataKey="B_west_base" name="West Queue (B)" stroke="#ef4444" strokeWidth={2} strokeDasharray="5 5" dot={false} />
                         <Line type="monotone" dataKey="A_north_base" name="North Queue (A)" stroke="#ec4899" strokeWidth={2} strokeDasharray="5 5" dot={false} />
+                        <Line type="monotone" dataKey="A_south_base" name="South Queue (A)" stroke="#f43f5e" strokeWidth={2} strokeDasharray="5 5" dot={false} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
