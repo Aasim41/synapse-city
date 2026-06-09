@@ -80,8 +80,11 @@ class MultiTrafficController:
                 self.green_A_ticks = 0
         else:
             if self.phase_A != desired_A:
+                if self.phase_A == "ALL_RED":
+                    self.phase_A = desired_A
+                    self.green_A_ticks = 0
                 # Allow switch if min duration met OR if it's an emergency/pedestrian
-                if self.green_A_ticks >= self.MIN_GREEN_DURATION or "ALL_RED" in desired_A or "GREEN_" in desired_A and desired_A != "GREEN_NS" and desired_A != "GREEN_EW":
+                elif self.green_A_ticks >= self.MIN_GREEN_DURATION or "ALL_RED" in desired_A:
                     self.phase_A = "YELLOW"
                     self.yellow_A = self.YELLOW_DURATION
                 else:
@@ -97,7 +100,10 @@ class MultiTrafficController:
                 self.green_B_ticks = 0
         else:
             if self.phase_B != desired_B:
-                if self.green_B_ticks >= self.MIN_GREEN_DURATION or "ALL_RED" in desired_B or "GREEN_" in desired_B and desired_B != "GREEN_NS" and desired_B != "GREEN_EW":
+                if self.phase_B == "ALL_RED":
+                    self.phase_B = desired_B
+                    self.green_B_ticks = 0
+                elif self.green_B_ticks >= self.MIN_GREEN_DURATION or "ALL_RED" in desired_B:
                     self.phase_B = "YELLOW"
                     self.yellow_B = self.YELLOW_DURATION
                 else:
