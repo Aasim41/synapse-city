@@ -5,3 +5,11 @@ venv/
 env/
 frontend/node_modules/
 frontend/.next/
+
+.env
+.env.*
+*.env*
+.env.local
+*.local
+node_modules
+__pycache__
