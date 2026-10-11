@@ -13,3 +13,15 @@ frontend/.next/
 *.local
 node_modules
 __pycache__
+
+.env
+.env.*
+*.env*
+.env.local
+*.local
+node_modules
+__pycache__
+git_repo_mappings.json
+git_sync_history.json
+.agents/
+*.log
