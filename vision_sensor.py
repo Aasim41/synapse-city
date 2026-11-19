@@ -47,6 +47,7 @@ class IndianTrafficVisionSensor:
         }
         self.zone_counts_detail = {k: {} for k in ["A_north", "A_south", "A_east", "A_west"]}
         
+        self.max_frames = 0
         self.emergency_trigger = None
         self.pedestrian_trigger = 0
         self.show_zones = True
@@ -125,6 +126,9 @@ class IndianTrafficVisionSensor:
                     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                     continue
                 frame_count += 1
+                if self.max_frames > 0 and frame_count >= self.max_frames:
+                    print(f"✅ Processed {frame_count} test frames successfully.")
+                    break
             else:
                 time.sleep(0.03)
                 continue
@@ -308,7 +312,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--video", default="assets/indian_traffic.mp4", help="Video file path or stream URL")
     parser.add_argument("--api", default="http://127.0.0.1:8000/api/sensor/data", help="FastAPI backend URL")
+    parser.add_argument("--headless", action="store_true", help="Run without OpenCV GUI window")
+    parser.add_argument("--frames", type=int, default=0, help="Max frames to process (0 = infinite)")
     args = parser.parse_args()
     
-    sensor = IndianTrafficVisionSensor(video_path=args.video, api_url=args.api)
+    sensor = IndianTrafficVisionSensor(video_path=args.video, api_url=args.api, show_display=not args.headless)
+    if args.frames > 0:
+        sensor.max_frames = args.frames
     sensor.run()
