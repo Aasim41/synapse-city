@@ -25,3 +25,4 @@ git_repo_mappings.json
 git_sync_history.json
 .agents/
 *.log
+*.pt
