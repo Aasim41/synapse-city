@@ -46,7 +46,6 @@ export default function Dashboard() {
   const [history, setHistory] = useState<ChartDataPoint[]>([]);
 
   // ── Feature states ──
-  const [simEmergency, setSimEmergency] = useState<string | null>(null);
   const [simPedestrians, setSimPedestrians] = useState<number>(0);
   const [isNight, setIsNight] = useState(true);
   const [weather, setWeather] = useState<'clear' | 'rain' | 'fog'>('clear');
@@ -141,12 +140,7 @@ export default function Dashboard() {
         const totalNS = currentQueues.A_north + currentQueues.A_south;
         const totalEW = currentQueues.A_east + currentQueues.A_west;
 
-        if (simEmergency) {
-          actionA = "ALL_RED";
-          actionB = "ALL_RED";
-          xaiA = `🚨 EMERGENCY OVERRIDE: Ambulance approaching on ${simEmergency}! Stopping all traffic for priority clearance.`;
-          xaiB = "🚨 EMERGENCY OVERRIDE: Stopping traffic for emergency vehicle.";
-        } else if (simPedestrians > 0) {
+        if (simPedestrians > 0) {
           actionA = "ALL_RED";
           actionB = "ALL_RED";
           xaiA = "🚸 PEDESTRIAN SAFETY OVERRIDE: Halting all lanes for pedestrian crossing.";
@@ -198,7 +192,7 @@ export default function Dashboard() {
           action_B: actionB,
           xai_A: xaiA,
           xai_B: xaiB,
-          emergency_A: simEmergency,
+          emergency_A: null,
           emergency_B: null,
           active_incident: null,
           rush_hour: activeRushHourLocal
@@ -241,7 +235,7 @@ export default function Dashboard() {
       if (ws) ws.close();
       if (fallbackInterval) clearInterval(fallbackInterval);
     };
-  }, [activeRushHourLocal, simEmergency, simPedestrians]);
+  }, [activeRushHourLocal, simPedestrians]);
 
   // ── Sound Management ──
   const startSound = useCallback(() => {
