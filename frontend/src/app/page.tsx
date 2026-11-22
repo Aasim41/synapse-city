@@ -337,33 +337,23 @@ export default function Dashboard() {
   // Weather speed multiplier
   const weatherSpeed = weather === 'rain' ? 1.6 : weather === 'fog' ? 1.3 : 1.0;
 
-  if (!data) {
-    return (
-      <div className="min-h-screen bg-[#0a0e1a] text-white flex items-center justify-center font-sans">
-        <div className="flex flex-col items-center animate-pulse">
-          <div className="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <h2 className="text-xl font-semibold text-slate-300">Connecting to City Cloud...</h2>
-        </div>
-      </div>
-    );
-  }
-
-  const { A_north, A_south, A_east, A_west, B_north, B_south, B_east, B_west } = data.queues || {
+  const currentData = data || DEFAULT_TRAFFIC_DATA;
+  const { A_north, A_south, A_east, A_west, B_north, B_south, B_east, B_west } = currentData.queues || {
     A_north: 0, A_south: 0, A_east: 0, A_west: 0,
     B_north: 0, B_south: 0, B_east: 0, B_west: 0
   };
   
-  const ped_A = data.pedestrians_A || 0;
-  const ped_B = data.pedestrians_B || 0;
+  const ped_A = currentData.pedestrians_A || 0;
+  const ped_B = currentData.pedestrians_B || 0;
   
-  const action_A = data.action_A || "GREEN_NS";
-  const action_B = data.action_B || "GREEN_NS";
+  const action_A = currentData.action_A || "GREEN_NS";
+  const action_B = currentData.action_B || "GREEN_NS";
   
-  const xai_A = data.xai_A || "Waiting for AI inference...";
-  const xai_B = data.xai_B || "Waiting for AI inference...";
+  const xai_A = currentData.xai_A || "Waiting for AI inference...";
+  const xai_B = currentData.xai_B || "Waiting for AI inference...";
   
-  const emergency_A = data.emergency_A || null;
-  const emergency_B = data.emergency_B || null;
+  const emergency_A = currentData.emergency_A || null;
+  const emergency_B = currentData.emergency_B || null;
 
   // Unstructured traffic generator: colors match the Vehicle Key legend
   const getVehicleClass = (i: number) => {
